@@ -188,7 +188,7 @@ dispatcher.add_handler(AFK_REGEX_HANDLER, AFK_GROUP)
 dispatcher.add_handler(NO_AFK_HANDLER, AFK_GROUP)
 dispatcher.add_handler(AFK_REPLY_HANDLER, AFK_REPLY_GROUP)
 
-__mod_name__ = "AFK 💤"
+__mod_name__ = "𝐀ꜰᴋ"
 __help__ = """
 *AFK*
  ❍ `/afk` :Tells other users that you are AFK\n
