@@ -51,7 +51,7 @@ dispatcher.add_handler(ANIMALFACT_HANDLER)
 CAT_HANDLER = DisableAbleCommandHandler(("cats", "cat"), cats, run_async=True)
 dispatcher.add_handler(CAT_HANDLER)
 
-__mod_name__ = "Animals"
+__mod_name__ = "𝐀ɴɪᴍᴀʟꜱ"
 __help__ = """
    ➢ `/animalfacts` - To Get random animal facts.
    ➢ `/cats` - To Get Random Photo of Cats.
