@@ -158,7 +158,7 @@ __handlers__ = [
     CHATBOT_HANDLER,
 ]
 
-__mod_name__ = "ChatBot 🤖"
+__mod_name__ = "𝐂ʜᴀᴛʙᴏᴛ"
 
 __help__ = """
 *Admins only Commands*:
