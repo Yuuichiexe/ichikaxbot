@@ -95,7 +95,7 @@ async def paste_func(_, message):
 
 
 
-__mod_name__ = "Paste / Carbon"
+__mod_name__ = "𝐏ᴀꜱᴛᴇ/𝐂ᴀʀʙᴏɴꜱ"
 
 __help__ = """
    ➢ `/Carbon` : Reply to a message to show it as code.
