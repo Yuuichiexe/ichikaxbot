@@ -127,7 +127,7 @@ TIME_HANDLER = DisableAbleCommandHandler("time", gettime, run_async=True)
 
 dispatcher.add_handler(TIME_HANDLER)
 
-__mod_name__ = "Time ⏰"
+__mod_name__ = "𝐓ɪᴍᴇ"
 __help__ = """
 *Time*
  ❍ `/time` : To check time of given timezone
