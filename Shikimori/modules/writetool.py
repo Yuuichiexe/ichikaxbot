@@ -3,8 +3,8 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Upda
 from telegram.ext import CallbackContext
 from telegram.ext.dispatcher import run_async
 
-from ShikimoriBot import BOT_NAME, BOT_USERNAME, dispatcher
-from ShikimoriBot.modules.disable import DisableAbleCommandHandler
+from Shikimori import BOT_NAME, BOT_USERNAME, dispatcher
+from Shikimori.modules.disable import DisableAbleCommandHandler
 
 
 @run_async
