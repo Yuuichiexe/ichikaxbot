@@ -73,7 +73,7 @@ __handlers__ = [
 ]
 
 
-__mod_name__ = "Crypto 🪙"
+__mod_name__ = "𝐂ʀʏᴘᴛᴏ"
 __help__ = """
    ➢ `/crypto` [currency] :Get Real Time value from currency given.
 """
