@@ -57,7 +57,7 @@ dispatcher.add_handler(DARE_HANDLER)
 
 __mod_name__ = "Truth or Dare"
 __help__ = """
-*Truth or Dare*
+*𝐓ʀᴜᴛʜ/𝐃ᴀʀᴇ*
  ❍ `/truth` : Asks a question
  ❍ `/dare` : Tells a task to do
  ❍ `/tord` : Can either be a truth or dare
