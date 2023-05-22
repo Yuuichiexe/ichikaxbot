@@ -117,7 +117,7 @@ __handlers__ = [
 
 ]
 
-__mod_name__ = "AnimeQuotes"
+__mod_name__ = "𝐀ɴɪᴍᴇ-𝐐ᴜᴏᴛᴇꜱ"
 __help__ = """
 *Anime Quotes & Quotes*
 
