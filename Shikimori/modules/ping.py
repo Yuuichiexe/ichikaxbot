@@ -148,7 +148,7 @@ dispatcher.add_handler(IP_HANDLER)
 dispatcher.add_handler(PING_HANDLER)
 dispatcher.add_handler(SYS_STATUS_HANDLER)
 
-__mod_name__ = "Ping 🏓"
+__mod_name__ = "𝐏ɪɴɢ"
 __help__ = """
 *Ping ⚡️*
  ❍ `/ping` : Sends ping
