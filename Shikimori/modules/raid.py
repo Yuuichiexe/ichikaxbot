@@ -244,7 +244,7 @@ def raidtime(update: Update, context: CallbackContext) -> Optional[str]:
 
 
 
-__mod_name__ = "AntiRaid"
+__mod_name__ = "𝐀ɴᴛɪ-ʀᴀɪᴅ"
 
 __help__ = """"
 - `/raid`
