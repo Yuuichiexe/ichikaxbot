@@ -238,7 +238,7 @@ dispatcher.add_handler(UNAPPROVEALL_BTN)
 __command_list__ = ["approve", "unapprove", "approved", "approval"]
 __handlers__ = [APPROVE, DISAPPROVE, APPROVED, APPROVAL]
 
-__mod_name__ = "Approvals ✅"
+__mod_name__ = "𝐀ᴘᴘʀᴏᴠᴀʟꜱ"
 
 __help__ = """
 Sometimes, you might trust a user not to send unwanted content.
