@@ -1,4 +1,4 @@
-__mod_name__ = "GIFs"
+__mod_name__ = "𝐆ɪꜰꜱ"
 
 __help__ = """
 > `/pat` *:* Pat someone.
