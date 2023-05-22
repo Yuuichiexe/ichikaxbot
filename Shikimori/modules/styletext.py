@@ -498,7 +498,7 @@ def lined(update, context):
     else:
         message.reply_text(string)
 
-__mod_name__ = "Styletext"
+__mod_name__ = "𝐒ᴛʏʟᴇᴛᴇxᴛ"
 
 __help__ = """
  ❍ `/weebify` <text>: returns a weebified text
