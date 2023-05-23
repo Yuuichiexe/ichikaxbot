@@ -193,9 +193,30 @@ PM_START_TEXT = """
 ‣ ᴄʜᴀᴛꜱ: `{}`
 ‣ ᴜᴘᴛɪᴍᴇ: `{}`
 ════════════════
-ᴜꜱᴇ /help ᴛᴏ ɢᴏ ᴛʜʀᴏᴜɢʜ ᴍʏ ᴄᴏᴍᴍᴀɴᴅꜱ.
+➛ ᴛʀʏ ᴛʜᴇ ɢᴜɪᴅᴇʟɪɴᴇꜱ ʙᴜᴛᴛᴏɴ ʙᴇʟᴏᴡ ᴛᴏ ᴋɴᴏᴡ ᴍʏ ᴀʙɪʟɪᴛɪᴇꜱ ××
 ×⋆──────────────⋆×✧
 """
-
+buttons = [
+    [
+        InlineKeyboardButton(
+            text=f"Add {BOT_NAME} To Your Group",
+            url=f"https://telegram.dog/{BOT_USERNAME}?startgroup=true",
+        )
+    ],
+    [
+        InlineKeyboardButton(text="📓 ɢᴜɪᴅᴇʟɪɴᴇꜱ", callback_data="help_back"),
+        InlineKeyboardButton(
+            text="ᴏᴡɴᴇʀ 💸", url="https://t.me/remxowner"
+        ),
+    ],
+    [
+        InlineKeyboardButton(
+            text="🚑 ꜱᴜᴘᴘᴏʀᴛ", url=f"https://telegram.dog/@Xd_Bots_Support"
+        ),
+        InlineKeyboardButton(
+            text="📢 ᴜᴘᴅᴀᴛᴇꜱ", url="https://telegram.dog/xD_Bots_Updates"
+        ),
+    ],
+]
 HELP_STRINGS = """
 𝙲𝚕𝚒𝚌𝚔 𝚘𝚗 𝚝𝚑𝚎 𝚋𝚞𝚝𝚝𝚘𝚗 𝚋𝚎𝚕𝚕𝚘𝚠 𝚝𝚘 𝚐𝚎𝚝 𝚍𝚎𝚜𝚌𝚛𝚒𝚙𝚝𝚒𝚘𝚗 𝚊𝚋𝚘𝚞𝚝 𝚜𝚙𝚎𝚌𝚒𝚏𝚒𝚌𝚜 𝚌𝚘𝚖𝚖𝚊𝚗𝚍."""
