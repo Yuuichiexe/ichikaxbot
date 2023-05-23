@@ -32,7 +32,7 @@ from telegram.ext import Filters, MessageHandler
 
 from Shikimori import dispatcher
 from Shikimori.modules.disable import DisableAbleCommandHandler, DisableAbleMessageHandler
-from Shikimori.modules.sql.afk_redis import start_afk, end_afk, is_user_afk, afk_reason
+from Shikimori.modules.redis.afk_redis import start_afk, end_afk, is_user_afk, afk_reason
 from Shikimori import REDIS
 from Shikimori.modules.users import get_user_id
 
