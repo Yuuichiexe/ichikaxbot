@@ -1,42 +1,41 @@
 """
-MIT License
-
-Copyright (c) 2022 Arsh
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+STATUS: Code is working. ✅
 """
 
-from typing import Optional
-import time
+"""
+GNU General Public License v3.0
 
-from telegram import Message, User
+Copyright (C) 2022, SOME-1HING [https://github.com/SOME-1HING]
+
+Credits:-
+    I don't know who originally wrote this code. If you originally wrote this code, please reach out to me. 
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+"""
+
+import time
+from .redis import REDIS
+
 from telegram import MessageEntity, ParseMode
 from telegram.error import BadRequest
 from telegram.ext import Filters, MessageHandler
 
 from Shikimori import dispatcher
-from Shikimori.modules.disable import DisableAbleCommandHandler, DisableAbleMessageHandler
+from Shikimori.modules.disable import DisableAbleCommandHandler
 from Shikimori.modules.redis.afk_redis import start_afk, end_afk, is_user_afk, afk_reason
 from Shikimori.modules.users import get_user_id
- 
-    
-from Shikimori.modules.helper_funcs.alternate import send_message
+
 from Shikimori.modules.helper_funcs.readable_time import get_readable_time
 
 AFK_GROUP = 7
@@ -48,17 +47,24 @@ def afk(update, context):
     if not user:  # ignore channels
         return
 
-    if user.id == 777000:
-        return
     start_afk_time = time.time()
-    reason = args[1] if len(args) >= 2 else "none"
+    if len(args) >= 2:
+        reason = args[1]
+    else:
+        reason = "none"
     start_afk(update.effective_user.id, reason)
     REDIS.set(f'afk_time_{update.effective_user.id}', start_afk_time)
     fname = update.effective_user.first_name
     try:
-        update.effective_message.reply_text(f"{fname} is now away!")
-    except BadRequest:
-        pass
+        Shikimori = update.effective_message.reply_text(
+            "*{}* is now AFK! GoodBye!".format(fname), parse_mode=ParseMode.MARKDOWN)
+        time.sleep(5)
+        
+            
+        
+            
+   
+    
 
 def no_longer_afk(update, context):
     user = update.effective_user
@@ -70,14 +76,19 @@ def no_longer_afk(update, context):
         return
     end_afk_time = get_readable_time((time.time() - float(REDIS.get(f'afk_time_{user.id}'))))
     REDIS.delete(f'afk_time_{user.id}')
-    if res := end_afk(user.id):
+    res = end_afk(user.id)
+    if res:
         if message.new_chat_members:  #dont say msg
             return
         firstname = update.effective_user.first_name
         try:
-            message.reply_text(
-                f"{firstname} is back online!\n\nYou were gone for {end_afk_time}."
-            )
+             Shikimori = message.reply_text(
+                "*{}* is back in the chat!\nCame back after: `{}`".format(firstname, end_afk_time), parse_mode=ParseMode.MARKDOWN)
+             time.sleep(5)
+             try:
+                 Shikimori.delete()
+             except BadRequest:
+                 pass
         except Exception:
             return
 
@@ -115,7 +126,8 @@ def reply_afk(update, context):
                 try:
                     chat = context.bot.get_chat(user_id)
                 except BadRequest:
-                    print(f"Error: Could not fetch userid {user_id} for AFK module")
+                    print("Error: Could not fetch userid {} for AFK module".
+                          format(user_id))
                     return
                 fst_name = chat.first_name
 
@@ -134,43 +146,51 @@ def check_afk(update, context, user_id, fst_name, userc_id):
     if is_user_afk(user_id):
         reason = afk_reason(user_id)
         since_afk = get_readable_time((time.time() - float(REDIS.get(f'afk_time_{user_id}'))))
-        if int(userc_id) == int(user_id):
-            return
         if reason == "none":
-            res = f"{fst_name} is afk.\n\nLast seen {since_afk} ago."
+            if int(userc_id) == int(user_id):
+                return
+            res = "*{}* is busy right now!\nSince: `{}`".format(fst_name, since_afk)
+            update.effective_message.reply_text(res, parse_mode=ParseMode.MARKDOWN)
         else:
-            res = f"{fst_name} is afk.\nReason: {reason}\n\nLast seen {since_afk} ago."
-
-        update.effective_message.reply_text(res)
-
+            if int(userc_id) == int(user_id):
+                return
+            res = "*{}* is busy right now!\n*Reason*: `{}`\n*Away Time*: `{}`".format(fst_name, reason, since_afk)
+            Shikimori = update.effective_message.reply_text(res, parse_mode=ParseMode.MARKDOWN)
+            time.sleep(5)
+            try:
+                Shikimori.delete()
+            except BadRequest:
+                pass
 
 def __user_info__(user_id):
     is_afk = is_user_afk(user_id)
     text = ""
     if is_afk:
         since_afk = get_readable_time((time.time() - float(REDIS.get(f'afk_time_{user_id}'))))
-        text = "<i>This user is currently afk (away from keyboard).</i>"
-        text += f"\n<i>Since: {since_afk}</i>"
+        text = "This user is currently afk (away from keyboard)."
+        text += f"\nLast Seen: {since_afk} Ago."
        
     else:
-        text = "<i>This user is currently isn't afk (away from keyboard).</i>"
+        text = "This user currently isn't afk (not away from keyboard)."
     return text
-
 
 def __gdpr__(user_id):
     end_afk(user_id)
 
 
-
-__mod_name__ = "𝐀ꜰᴋ"
-
-
-AFK_HANDLER = DisableAbleCommandHandler("afk", afk)
-AFK_REGEX_HANDLER = MessageHandler(Filters.regex("(?i)brb"), afk)
-NO_AFK_HANDLER = MessageHandler(Filters.all & Filters.group, no_longer_afk)
-AFK_REPLY_HANDLER = MessageHandler(Filters.all & Filters.group, reply_afk)
+AFK_HANDLER = DisableAbleCommandHandler("afk", afk, run_async=True)
+AFK_REGEX_HANDLER = MessageHandler(Filters.regex("(?i)brb"), afk, friendly="afk", run_async=True)
+NO_AFK_HANDLER = MessageHandler(Filters.all & Filters.chat_type.groups, no_longer_afk, run_async=True)
+AFK_REPLY_HANDLER = MessageHandler(Filters.all & Filters.chat_type.groups, reply_afk, run_async=True)
 
 dispatcher.add_handler(AFK_HANDLER, AFK_GROUP)
 dispatcher.add_handler(AFK_REGEX_HANDLER, AFK_GROUP)
 dispatcher.add_handler(NO_AFK_HANDLER, AFK_GROUP)
 dispatcher.add_handler(AFK_REPLY_HANDLER, AFK_REPLY_GROUP)
+
+__mod_name__ = "𝐀ꜰᴋ"
+__help__ = """
+*AFK*
+ ❍ `/afk` :Tells other users that you are AFK\n
+ ❍ `brb` :Tells other users that you are busy right now
+"""
