@@ -13,7 +13,7 @@ async def waifu(_,message: Message):
     r = requests.get("https://waifu-api.vercel.app").json() #api credit- @YASH_SHARMA_1807 on telegram
     await message.reply_photo(r)
   else:
-    await message.reply("Use This Command In Group")
+    await message.reply("**Use This Command In Group**")
     
 @pbot.on_message(filters.command("ncosplay"))
 async def waifus(_,message: Message):
@@ -21,4 +21,5 @@ async def waifus(_,message: Message):
     rape = requests.get("https://waifu-api.vercel.app/items/1").json()
     await message.reply_photo(rape)
   else:
-    await message.reply("Use This Command In PM")
+    await message.reply("**Use This Command In PM**")
+    
