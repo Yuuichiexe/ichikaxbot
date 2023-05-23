@@ -59,12 +59,12 @@ def afk(update, context):
         Shikimori = update.effective_message.reply_text(
             "*{}* is now AFK! GoodBye!".format(fname), parse_mode=ParseMode.MARKDOWN)
         time.sleep(5)
-        
-            
-        
-            
-   
-    
+        try:
+            Shikimori.delete()
+        except BadRequest:
+            pass
+    except BadRequest:
+         pass
 
 def no_longer_afk(update, context):
     user = update.effective_user
