@@ -15,7 +15,7 @@ url = "https://karma-reverse-api2-0.vercel.app/reverse"
 
 #REVERSE FUNCTION
 COMMANDS = ["reverse", "pp", "grs"]
-@app.on_message(filters.command(COMMANDS))
+@pbot.on_message(filters.command(COMMANDS))
 async def reverse(_, message):
     if not message.reply_to_message:
         await message.reply_text("Reply To A Photo Or A Sticker")
