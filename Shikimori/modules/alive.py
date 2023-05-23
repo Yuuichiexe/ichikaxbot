@@ -37,10 +37,10 @@ def awake(update: Update, context: CallbackContext):
     buttons = [
         [
         InlineKeyboardButton(
-            text="Updates",
+            text="ᴜᴘᴅᴀᴛᴇꜱ",
             url=f"https://t.me/{UPDATE_CHANNEL}"),
         InlineKeyboardButton(
-            text="Support",
+            text="ꜱᴜᴘᴘᴏʀᴛ",
             url=f"https://t.me/{SUPPORT_CHAT}"),
         ],
      ]
