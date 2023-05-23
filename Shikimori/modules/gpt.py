@@ -11,7 +11,7 @@ from pyrogram.enums import ChatType
 @pbot.on_message(filters.command("chat"))
 async def gpt(app,message):
 	if message.chat.type == ChatType.PRIVATE:
-      txt =await message.reply("**Generating...**")
+      (txt =await message.reply("**Generating...**")
       if len(message.command) < 2 :
           return await txt.edit("**Give me a query too**")
       query = message.text.split("/chat")[1]
