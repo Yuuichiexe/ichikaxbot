@@ -2,7 +2,7 @@ from pyrogram import Client, filters
 from pyrogram.types import Message
 
 from Shikimori import OWNER_ID
-from Shikimori import pgram as bot
+from Shikimori import pbot as bot
 
 
 @bot.on_message(filters.private & filters.incoming)
