@@ -28,6 +28,7 @@ from telegram import MessageEntity
 from telegram.error import BadRequest
 from telegram.ext import Filters, MessageHandler
 
+from Shikimori import dispatcher
 from Shikimori.modules.redis import REDIS
 from Shikimori.modules.disable import DisableAbleCommandHandler
 from Shikimori.modules.helper_funcs.readable_time import get_readable_time
