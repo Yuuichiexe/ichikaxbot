@@ -11,12 +11,12 @@ from pyrogram.enums import *
 from Shikimori import pbot
 
 
-@app.on_message(filters.command("cosplay"))
+@pbot.on_message(filters.command("cosplay"))
 async def cosplay(_,msg):
     img = requests.get("https://waifu-api.vercel.app").json()
     await msg.reply_photo(img, caption=f"Cosplay By @{app.me.username}\nCredits: Xd_Bots_Updates")
 
-@app.on_message(filters.command("ncosplay"))
+@pbot.on_message(filters.command("ncosplay"))
 async def ncosplay(_,msg):
     if msg.chat.type != ChatType.PRIVATE:
       await msg.reply_text("Sorry you can use this command only in private chat with bot",
