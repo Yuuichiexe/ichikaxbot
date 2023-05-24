@@ -33,7 +33,7 @@ from pytube import YouTube
 from requests import get
 
 from Shikimori import aiohttpsession as session
-from Shikimori import arq, pgram
+from Shikimori import arq, pbot
 from Shikimori.core.decorators.errors import capture_err
 from Shikimori.utils.pastebin import paste
 
