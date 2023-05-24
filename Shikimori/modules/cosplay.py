@@ -1,31 +1,22 @@
-'''
-This Project Is Created By @ImmortalsXKing
-'''
-import requests
-from pyrogram import *
-from pyrogram.types import *
-from pyrogram.enums import *
-from Shikimori import pbot
+    """@Kaizuryu"""
 
-@pbot.on_message(filters.command("cosplay"))
-async def waifu(_,message: Message):
-  if message.chat.type != ChatType.PRIVATE:    
-    r = requests.get("https://waifu-api.vercel.app").json() #api credit- @YASH_SHARMA_1807 on telegram
-    await message.reply_photo(r)
-  else:
-    await message.reply("**Use This Command In Group**")
-    
-@pbot.on_message(filters.command("ncosplay"))
-async def waifus(_,message: Message):
-  if message.chat.type == ChatType.PRIVATE:    
-    rape = requests.get("https://waifu-api.vercel.app/items/1").json()
-    await message.reply_photo(rape)
-  else:
-    await message.reply("**Use This Command In PM**")
-    
-  __mod_name__ = "𝐂ᴏꜱᴘʟᴀʏ"
+import requests
+from telethon import events
+from Shikimori import telethn as meow
+
+@meow.on(events.NewMessage(pattern="^/cosplay"))
+async def waifu(event):
+  r = requests.get("https://waifu-api.vercel.app").json() #api credit- @YASH_SHARMA_1807 on telegram
+  await event.reply(file=r)
+  
+@meow.on(events.NewMessage(pattern="^/lewd"))
+async def waifu(event):
+  r = requests.get("https://waifu-api.vercel.app/items/1").json()
+  await event.reply(file=r)
+
+__mod_name__ = "𝐂ᴏꜱᴘʟᴀʏ"
 __help__ = """
-*cosplay*
-- /cosplay: ᴛᴏ ɢᴇɴᴇʀᴀᴛᴇ ᴄᴏꜱᴘʟᴀʏ ᴏꜰ ᴀɴɪᴍᴇ ᴄʜᴀʀᴀᴄᴛᴇʀꜱ
-"""  
-    
+Just a weeb type module to get anime cosplay and lewd pictures
+- /cosplay
+- /lewd
+"""
