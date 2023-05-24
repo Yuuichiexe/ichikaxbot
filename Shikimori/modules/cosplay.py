@@ -1,5 +1,3 @@
-    """@Kaizuryu"""
-
 import requests
 from telethon import events
 from Shikimori import telethn as meow
