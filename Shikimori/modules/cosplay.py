@@ -23,3 +23,9 @@ async def waifus(_,message: Message):
   else:
     await message.reply("**Use This Command In PM**")
     
+  __mod_name__ = "𝐂ᴏꜱᴘʟᴀʏ"
+__help__ = """
+*cosplay*
+- /cosplay: ᴛᴏ ɢᴇɴᴇʀᴀᴛᴇ ᴄᴏꜱᴘʟᴀʏ ᴏꜰ ᴀɴɪᴍᴇ ᴄʜᴀʀᴀᴄᴛᴇʀꜱ
+"""  
+    
