@@ -6,7 +6,7 @@ import random
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
-from Shikimori import OWNER_ID, tbot
+from Shikimori import OWNER_ID, telethn
 from Shikimori.events import register
 
 LOGO_LINKS = [
