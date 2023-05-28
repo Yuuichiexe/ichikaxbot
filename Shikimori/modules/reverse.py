@@ -26,7 +26,7 @@ class STRINGS:
 <b>Search Keyword:</b> <code>{}</code>
 <b>Results link:</b> <a href='{}'>Link</a>.
 
-<b>Credits:</b> @Xd_Bots_Support
+<b>Credits:</b> @SastaDev
     '''
 
 COMMANDS = ['reverse', 'grs', 'pp']
