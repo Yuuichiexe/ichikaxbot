@@ -6,8 +6,8 @@ import random
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
-from NekoRobot import OWNER_ID, tbot
-from NekoRobot.events import register
+from Shikimori import OWNER_ID, tbot
+from Shikimori.events import register
 
 LOGO_LINKS = [
     "https://telegra.ph/file/d1838efdafce9fe611d0c.jpg",
