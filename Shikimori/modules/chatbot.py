@@ -1,198 +1,209 @@
-# Credits to MetaVoid Team for making this module.
+"""
+STATUS: Code is working. ✅
+"""
 
-import json
+"""
+GNU General Public License v3.0
+
+Copyright (C) 2022, SOME-1HING [https://github.com/SOME-1HING]
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+"""
+
+import time
 import re
-import os
-import html
-import requests
-from Shikimori.modules.sql import log_channel_sql as logsql
-import Shikimori.modules.sql.chatbot_sql as sql
-from Shikimori import AI_API_KEY as api
-
-from time import sleep
-from telegram import ParseMode
-from telegram import (CallbackQuery, Chat, MessageEntity, InlineKeyboardButton,
-                      InlineKeyboardMarkup, Message, ParseMode, Update, Bot, User)
-from telegram.ext import (CallbackContext, CallbackQueryHandler, CommandHandler,
-                          DispatcherHandlerStop, Filters, MessageHandler,
-                          run_async)
-from telegram.error import BadRequest, RetryAfter, Unauthorized
-from telegram.utils.helpers import mention_html, mention_markdown, escape_markdown
-
-from Shikimori.modules.helper_funcs.filters import CustomFilters
-from Shikimori.modules.helper_funcs.chat_status import user_admin, user_admin_no_reply
-from Shikimori import  dispatcher, updater, SUPPORT_CHAT
-from Shikimori.modules.log_channel import loggable
+from Shikimori.__main__ import HELPABLE, IMPORTED, USER_SETTINGS, CHAT_SETTINGS
+from Shikimori.modules.helper_funcs.readable_time import get_readable_time
+from Shikimori import (
+    dispatcher,
+    StartTime,
+)
+from Shikimori.vars import (
+    BOT_USERNAME,
+    HELP_STRINGS,
+    PM_START_TEXT,
+    UPDATE_CHANNEL,
+    SUPPORT_CHAT,
+    ANIME_NAME,
+    START_MEDIA,)
+from Shikimori.modules.helper_funcs.misc import paginate_modules
+from Shikimori.modules.helper_funcs.chat_status import is_user_admin
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Update
+from telegram.ext import CallbackContext, CommandHandler
+from telegram.utils.helpers import escape_markdown
+import Shikimori.modules.sql.users_sql as sql
 
 bot_name = f"{dispatcher.bot.first_name}"
 
-@user_admin_no_reply
-@loggable
-def kukirm(update: Update, context: CallbackContext) -> str:
-    query: Optional[CallbackQuery] = update.callback_query
-    bot = context.bot
-    user: Optional[User] = update.effective_user
-    match = re.match(r"rm_chat\((.+?)\)", query.data)
-    if match:
-        user_id = match.group(1)
-        chat: Optional[Chat] = update.effective_chat
-        is_kuki = sql.rem_kuki(chat.id)
-        if is_kuki:
-            is_kuki = sql.rem_kuki(user_id)
-            LOG = (
-                f"<b>{html.escape(chat.title)}:</b>\n"
-                f"AI_DISABLED\n"
-                f"<b>Admin:</b> {mention_html(user.id, html.escape(user.first_name))}\n"
-            )
-            log_channel = logsql.get_chat_log_channel(chat.id)
-            if log_channel:
-                return bot.send_message(
-                log_channel,
-                LOG,
-                parse_mode=ParseMode.HTML,
-                disable_web_page_preview=True,
-            )
-            return
-        else:
-            update.effective_message.edit_text(
-                f"{bot_name} Chatbot disable by {mention_html(user.id, user.first_name)}.",
-                parse_mode=ParseMode.HTML,
-            )
+IMG_START = START_MEDIA.split(".")
+start_id = IMG_START[-1]
 
-    return ""
-
-
-@user_admin_no_reply
-@loggable
-def kukiadd(update: Update, context: CallbackContext) -> str:
-    query: Optional[CallbackQuery] = update.callback_query
-    bot = context.bot
-    user: Optional[User] = update.effective_user
-    match = re.match(r"add_chat\((.+?)\)", query.data)
-    if match:
-        user_id = match.group(1)
-        chat: Optional[Chat] = update.effective_chat
-        is_kuki = sql.set_kuki(chat.id)
-        if is_kuki:
-            is_kuki = sql.set_kuki(user_id)
-            LOG = (
-                f"<b>{html.escape(chat.title)}:</b>\n"
-                f"AI_ENABLE\n"
-                f"<b>Admin:</b> {mention_html(user.id, html.escape(user.first_name))}\n"
-            )
-            log_channel = logsql.get_chat_log_channel(chat.id)
-            if log_channel:
-                return bot.send_message(
-                log_channel,
-                LOG,
-                parse_mode=ParseMode.HTML,
-                disable_web_page_preview=True,
-            )
-            return
-        else:
-            update.effective_message.edit_text(
-                f"{bot_name} Chatbot enable by {mention_html(user.id, user.first_name)}.",
-                parse_mode=ParseMode.HTML,
-            )
-
-    return ""
-
-
-@user_admin
-@loggable
-def kuki(update: Update, context: CallbackContext):
-    user = update.effective_user
-    message = update.effective_message
-    msg = "Choose an option"
-    keyboard = InlineKeyboardMarkup([[
+buttons = [
+    [
         InlineKeyboardButton(
-            text="Enable",
-            callback_data="add_chat({})")],
-       [
-        InlineKeyboardButton(
-            text="Disable",
-            callback_data="rm_chat({})")]])
-    message.reply_text(
-        msg,
-        reply_markup=keyboard,
-        parse_mode=ParseMode.HTML,
-    )
-
-def kuki_message(context: CallbackContext, message):
-    reply_message = message.reply_to_message
-    if message.text.lower() == "Yuzuki":
-        return True
-    if reply_message:
-        if reply_message.from_user.id == context.bot.get_me().id:
-            return True
-    else:
-        return False
-        
-
-def chatbot(update: Update, context: CallbackContext):
-    message = update.effective_message
-    chat_id = update.effective_chat.id
-    bot = context.bot
-    is_kuki = sql.is_kuki(chat_id)
-    if is_kuki:
-        return
-
-    if message.text and not message.document:
-        if not kuki_message(context, message):
-            return
-        Exon = message.text
-        bot.send_chat_action(chat_id, action="typing")
-        url = f"https://merissachatbot.tk/api/apikey=5700727404-MERISSAul3rht5mU1/Akeno/Kakashi/message={Exon}"
-        request = requests.get(url)
-        results = json.loads(request.text)
-        result = results["reply"]
-        sleep(0.5)
-        message.reply_text(result)
-
-def list_all_chats(update: Update, context: CallbackContext):
-    chats = sql.get_all_kuki_chats()
-    text = "<b>CHATBOT-Enabled Chats</b>\n"
-    for chat in chats:
-        try:
-            x = context.bot.get_chat(int(*chat))
-            name = x.title or x.first_name
-            text += f"• <code>{name}</code>\n"
-        except (BadRequest, Unauthorized):
-            sql.rem_kuki(*chat)
-        except RetryAfter as e:
-            sleep(e.retry_after)
-    update.effective_message.reply_text(text, parse_mode="HTML")
-
-
-
-CHATBOTK_HANDLER = CommandHandler("chatbot", kuki, run_async = True)
-ADD_CHAT_HANDLER = CallbackQueryHandler(kukiadd, pattern=r"add_chat", run_async = True)
-RM_CHAT_HANDLER = CallbackQueryHandler(kukirm, pattern=r"rm_chat", run_async = True)
-CHATBOT_HANDLER = MessageHandler(
-    Filters.text & (~Filters.regex(r"^#[^\s]+") & ~Filters.regex(r"^!")
-                    & ~Filters.regex(r"^\/")), chatbot, run_async = True)
-LIST_ALL_CHATS_HANDLER = CommandHandler(
-    "allchats", list_all_chats, filters=CustomFilters.dev_filter, run_async = True)
-
-dispatcher.add_handler(ADD_CHAT_HANDLER)
-dispatcher.add_handler(CHATBOTK_HANDLER)
-dispatcher.add_handler(RM_CHAT_HANDLER)
-dispatcher.add_handler(LIST_ALL_CHATS_HANDLER)
-dispatcher.add_handler(CHATBOT_HANDLER)
-
-__handlers__ = [
-    ADD_CHAT_HANDLER,
-    CHATBOTK_HANDLER,
-    RM_CHAT_HANDLER,
-    LIST_ALL_CHATS_HANDLER,
-    CHATBOT_HANDLER,
+            text=f"➕ Aᴅᴅ Mᴇ Tᴏ Yᴏᴜʀ Cʜᴀᴛ ➕", url=f"t.me/{BOT_USERNAME}?startgroup=true"),
+    ],
+    [
+        InlineKeyboardButton(text="Sᴜᴘᴘᴏʀᴛ", url=f"https://t.me/{SUPPORT_CHAT}"),
+        InlineKeyboardButton(text="Uᴘᴅᴀᴛᴇ", url=f"https://t.me/{UPDATE_CHANNEL}"),   
+    ], 
 ]
 
-__mod_name__ = "𝐂ʜᴀᴛʙᴏᴛ"
+def start(update: Update, context: CallbackContext):
+    args = context.args
+    uptime = get_readable_time((time.time() - StartTime))
+    if update.effective_chat.type == "private":
+        if len(args) >= 1:
+            if args[0].lower() == "help":
+                send_help(update.effective_chat.id, HELP_STRINGS)
+            elif args[0].lower().startswith("ghelp_"):
+                mod = args[0].lower().split("_", 1)[1]
+                if not HELPABLE.get(mod, False):
+                    return
+                send_help(
+                    update.effective_chat.id,
+                    HELPABLE[mod].__help__,
+                    InlineKeyboardMarkup(
+                        [[InlineKeyboardButton(text="Go Back", callback_data="help_back")]]
+                    ),
+                )
 
-__help__ = """
-*Admins only Commands*:
-  ➢ `/Chatbot`*:* Shows chatbot control panel
+            elif args[0].lower().startswith("stngs_"):
+                match = re.match("stngs_(.*)", args[0].lower())
+                chat = dispatcher.bot.getChat(match.group(1))
 
-*Thx @mizuhara_chan1 for the API*
-"""
+                if is_user_admin(chat, update.effective_user.id):
+                    send_settings(match.group(1), update.effective_user.id, False)
+                else:
+                    send_settings(match.group(1), update.effective_user.id, True)
+
+            elif args[0][1:].isdigit() and "rules" in IMPORTED:
+                IMPORTED["rules"].send_rules(update, args[0], from_pm=True)
+
+        else:
+            users = f"{sql.num_users()}"
+            chats = f"{sql.num_chats()}"
+            first_name = update.effective_user.first_name
+            start_text = PM_START_TEXT.format(escape_markdown(first_name), bot_name, ANIME_NAME, users, chats, uptime)
+            try:
+                if start_id in ("jpeg", "jpg", "png"):
+                    update.effective_message.reply_photo(
+                        START_MEDIA, caption = start_text, reply_markup=InlineKeyboardMarkup(buttons),
+                    parse_mode=ParseMode.MARKDOWN,
+                )
+                elif start_id in ("mp4", "mkv"):
+                    update.effective_message.reply_video(
+                    START_MEDIA, caption = start_text, reply_markup=InlineKeyboardMarkup(buttons),
+                    parse_mode=ParseMode.MARKDOWN,
+                )
+                elif start_id in ("gif", "webp"):
+                    update.effective_message.reply_animation(
+                    START_MEDIA, caption = start_text, reply_markup=InlineKeyboardMarkup(buttons),
+                    parse_mode=ParseMode.MARKDOWN,
+                )
+                else:
+                    update.effective_message.reply_text(start_text, reply_markup=InlineKeyboardMarkup(buttons),
+                    parse_mode=ParseMode.MARKDOWN,)
+
+            except:
+                update.effective_message.reply_text(start_text, reply_markup=InlineKeyboardMarkup(buttons),
+                    parse_mode=ParseMode.MARKDOWN,)
+    else:
+        start_buttons = [
+                 [
+                    InlineKeyboardButton(text="🚨Support Grp", url=f"https://t.me/{SUPPORT_CHAT}"),
+                    InlineKeyboardButton(text="❗Updates", url=f"https://t.me/{UPDATE_CHANNEL}")
+                 ]
+                ]
+        chat_id = update.effective_chat.id
+        first_name = update.effective_user.first_name
+        chat_name = dispatcher.bot.getChat(chat_id).title
+        start_text= "*Hey {}, I'm here for you at {} since :* `{}`\n".format(escape_markdown(first_name), escape_markdown(chat_name), uptime)
+        try:
+            if start_id in ("jpeg", "jpg", "png"):
+                update.effective_message.reply_photo(
+                    START_MEDIA, caption = start_text, reply_markup=InlineKeyboardMarkup(start_buttons),
+                parse_mode=ParseMode.MARKDOWN,
+            )
+            elif start_id in ("mp4", "mkv"):
+                update.effective_message.reply_video(
+                START_MEDIA, caption = start_text, reply_markup=InlineKeyboardMarkup(start_buttons),
+                parse_mode=ParseMode.MARKDOWN,
+            )
+            elif start_id in ("gif", "webp"):
+                update.effective_message.reply_animation(
+                START_MEDIA, caption = start_text, reply_markup=InlineKeyboardMarkup(start_buttons),
+                parse_mode=ParseMode.MARKDOWN,
+            )
+            else:
+                update.effective_message.reply_text(start_text, reply_markup=InlineKeyboardMarkup(start_buttons),
+                parse_mode=ParseMode.MARKDOWN,)
+
+        except:
+            update.effective_message.reply_text(start_text, reply_markup=InlineKeyboardMarkup(start_buttons),
+                parse_mode=ParseMode.MARKDOWN,)
+
+start_handler = CommandHandler("start", start, run_async=True)
+dispatcher.add_handler(start_handler)
+
+def send_settings(chat_id, user_id, user=False):
+    if user:
+        if USER_SETTINGS:
+            settings = "\n\n".join(
+                "*{}*:\n{}".format(mod.__mod_name__, mod.__user_settings__(user_id))
+                for mod in USER_SETTINGS.values()
+            )
+            dispatcher.bot.send_message(
+                user_id,
+                "These are your current settings:" + "\n\n" + settings,
+                parse_mode=ParseMode.MARKDOWN,
+            )
+
+        else:
+            dispatcher.bot.send_message(
+                user_id,
+                "Seems like there aren't any user specific settings available :'(",
+                parse_mode=ParseMode.MARKDOWN,
+            )
+
+    else:
+        if CHAT_SETTINGS:
+            chat_name = dispatcher.bot.getChat(chat_id).title
+            dispatcher.bot.send_message(
+                user_id,
+                text="Which module would you like to check {}'s settings for?".format(
+                    chat_name
+                ),
+                reply_markup=InlineKeyboardMarkup(
+                    paginate_modules(0, CHAT_SETTINGS, "stngs", chat=chat_id)
+                ),
+            )
+        else:
+            dispatcher.bot.send_message(
+                user_id,
+                "Seems like there aren't any chat settings available :'(\nSend this "
+                "in a group chat you're admin in to find its current settings!",
+                parse_mode=ParseMode.MARKDOWN,
+            )
+
+def send_help(chat_id, text, keyboard=None):
+    if not keyboard:
+        keyboard = InlineKeyboardMarkup(paginate_modules(0, HELPABLE, "help"))
+    dispatcher.bot.send_message(
+        chat_id=chat_id,
+        text=text,
+        parse_mode=ParseMode.MARKDOWN,
+        disable_web_page_preview=True,
+        reply_markup=keyboard,
+    )
