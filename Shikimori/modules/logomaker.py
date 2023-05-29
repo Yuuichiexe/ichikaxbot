@@ -50,7 +50,7 @@ from requests import get
 from telethon.tl.types import InputMessagesFilterPhotos
 from Shikimori import telethn as tbot
 
-from Shikimori import OWNER_ID, BOT_USERNAME, SUPPORT_CHAT
+from Shikimori import OWNER_ID, SUPPORT_CHAT
 from Shikimori.events import register
 from Shikimori import telethn
 from PIL import Image, ImageDraw, ImageFont
@@ -364,7 +364,7 @@ async def lego(event):
     draw.text((x, y), text, font=font, fill="white", stroke_width=1, stroke_fill="black")
     fname = "Asuka.png"
     img.save(fname, "png")
-    await telethn.send_file(event.chat_id, file=fname, caption = f"Made by @{BOT_USERNAME}")         
+    await telethn.send_file(event.chat_id, file=fname, caption="Made by @ichikax_bot")         
     await pesan.delete()
     if os.path.exists(fname):
             os.remove(fname)
