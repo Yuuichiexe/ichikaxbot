@@ -3,80 +3,60 @@ STATUS: Code is working. ✅
 """
 
 """
-BSD 2-Clause License
+GNU General Public License v3.0
 
 Copyright (C) 2022, SOME-1HING [https://github.com/SOME-1HING]
 
-All rights reserved.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-1. Redistributions of source code must retain the above copyright notice, this
-   list of conditions and the following disclaimer.
-
-2. Redistributions in binary form must reproduce the above copyright notice,
-   this list of conditions and the following disclaimer in the documentation
-   and/or other materials provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 import time
 import re
 from Shikimori.__main__ import HELPABLE, IMPORTED, USER_SETTINGS, CHAT_SETTINGS
 from Shikimori.modules.helper_funcs.readable_time import get_readable_time
-from Shikimori import ( 
-    BOT_USERNAME,
-    UPDATE_CHANNEL,
-    SUPPORT_CHAT,
+from Shikimori import (
     dispatcher,
     StartTime,
-    ANIME_NAME,
-    START_MEDIA,
 )
+from Shikimori.vars import (
+    BOT_USERNAME,
+    HELP_STRINGS,
+    PM_START_TEXT,
+    UPDATE_CHANNEL,
+    SUPPORT_CHAT,
+    ANIME_NAME,
+    START_MEDIA,)
 from Shikimori.modules.helper_funcs.misc import paginate_modules
 from Shikimori.modules.helper_funcs.chat_status import is_user_admin
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Update
 from telegram.ext import CallbackContext, CommandHandler
 from telegram.utils.helpers import escape_markdown
+import Shikimori.modules.sql.users_sql as sql
 
 bot_name = f"{dispatcher.bot.first_name}"
 
 IMG_START = START_MEDIA.split(".")
 start_id = IMG_START[-1]
 
-PM_START_TEXT = f"""
-\nI am *{bot_name}* , a group management bot based on the anime *{ANIME_NAME}*![ ]({START_MEDIA})
-
-*Click on the Commands Button below to go through my commands.*
-"""
-
-HELP_STRINGS = """
-Click on the button bellow to get description about specifics command."""
-
 buttons = [
     [
         InlineKeyboardButton(
-            text=f" Add {bot_name} to your Group", url=f"t.me/Chikaxprobot?startgroup=true"),
+            text=f"➕ Aᴅᴅ Mᴇ Tᴏ Yᴏᴜʀ Cʜᴀᴛ ➕", url=f"t.me/{BOT_USERNAME}?startgroup=true"),
     ],
     [
-        InlineKeyboardButton(text="ᴀʙᴏᴜᴛ", callback_data="Shikimori_"),
-        InlineKeyboardButton(text="ᴄᴏᴍᴍᴀɴᴅꜱ🔐", callback_data="help_back"),
-    ],
-    [
-        InlineKeyboardButton(text="ꜱᴜᴘᴘᴏʀᴛ✨", url=f"https://t.me/{SUPPORT_CHAT}"),
-        InlineKeyboardButton(text="ᴜᴘᴅᴅᴀᴛᴇꜱ✨", url=f"https://t.me/{UPDATE_CHANNEL}"),
-   
+        InlineKeyboardButton(text="Sᴜᴘᴘᴏʀᴛ", url=f"https://t.me/{SUPPORT_CHAT}"),
+        InlineKeyboardButton(text="Uᴘᴅᴀᴛᴇ", url=f"https://t.me/{UPDATE_CHANNEL}"),   
     ], 
 ]
 
@@ -112,17 +92,33 @@ def start(update: Update, context: CallbackContext):
                 IMPORTED["rules"].send_rules(update, args[0], from_pm=True)
 
         else:
+            users = f"{sql.num_users()}"
+            chats = f"{sql.num_chats()}"
             first_name = update.effective_user.first_name
-            hmm = "Hello *{}*! Nice to meet you!".format(escape_markdown(first_name))
-            HMM = hmm + PM_START_TEXT
+            start_text = PM_START_TEXT.format(escape_markdown(first_name), bot_name, ANIME_NAME, users, chats, uptime)
+            try:
+                if start_id in ("jpeg", "jpg", "png"):
+                    update.effective_message.reply_photo(
+                        START_MEDIA, caption = start_text, reply_markup=InlineKeyboardMarkup(buttons),
+                    parse_mode=ParseMode.MARKDOWN,
+                )
+                elif start_id in ("mp4", "mkv"):
+                    update.effective_message.reply_video(
+                    START_MEDIA, caption = start_text, reply_markup=InlineKeyboardMarkup(buttons),
+                    parse_mode=ParseMode.MARKDOWN,
+                )
+                elif start_id in ("gif", "webp"):
+                    update.effective_message.reply_animation(
+                    START_MEDIA, caption = start_text, reply_markup=InlineKeyboardMarkup(buttons),
+                    parse_mode=ParseMode.MARKDOWN,
+                )
+                else:
+                    update.effective_message.reply_text(start_text, reply_markup=InlineKeyboardMarkup(buttons),
+                    parse_mode=ParseMode.MARKDOWN,)
 
-            update.effective_message.reply_text(
-                HMM,                        
-                reply_markup=InlineKeyboardMarkup(buttons),
-                parse_mode=ParseMode.MARKDOWN,
-                timeout=60,
-                disable_web_page_preview=False,
-            )
+            except:
+                update.effective_message.reply_text(start_text, reply_markup=InlineKeyboardMarkup(buttons),
+                    parse_mode=ParseMode.MARKDOWN,)
     else:
         start_buttons = [
                  [
@@ -155,7 +151,7 @@ def start(update: Update, context: CallbackContext):
                 parse_mode=ParseMode.MARKDOWN,)
 
         except:
-            update.effective_message.reply_text(START_MEDIA, caption = start_text, reply_markup=InlineKeyboardMarkup(start_buttons),
+            update.effective_message.reply_text(start_text, reply_markup=InlineKeyboardMarkup(start_buttons),
                 parse_mode=ParseMode.MARKDOWN,)
 
 start_handler = CommandHandler("start", start, run_async=True)
