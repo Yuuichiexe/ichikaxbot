@@ -36,6 +36,7 @@ import re
 from Shikimori.__main__ import HELPABLE, IMPORTED, USER_SETTINGS, CHAT_SETTINGS
 from Shikimori.modules.helper_funcs.readable_time import get_readable_time
 from Shikimori import ( 
+    BOT_USERNAME,
     UPDATE_CHANNEL,
     SUPPORT_CHAT,
     dispatcher,
