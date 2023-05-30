@@ -6,7 +6,7 @@ import random
 import requests
 from PIL import Image, ImageDraw, ImageFont
 
-from Shikimori import BOT_NAME, BOT_USERNAME, OWNER_ID, telethn
+
 from Shikimori.events import register
 
 LOGO_LINKS = [
@@ -247,7 +247,7 @@ async def lego(event):
     quew = event.pattern_match.group(1)
     if event.sender_id != OWNER_ID and not quew:
         await event.reply(
-            "ɢɪᴠᴇ sᴏᴍᴇ ᴛᴇxᴛ ᴛᴏ ᴄʀᴇᴀᴛᴇ ʟᴏɢᴏ ʙᴀʙʏ​ !\nExample : `/logo <ANONYMOUS>`"
+            "ɢɪᴠᴇ sᴏᴍᴇ ᴛᴇxᴛ ᴛᴏ ᴄʀᴇᴀᴛᴇ ʟᴏɢᴏ ʙᴀʙʏ​ !\nExample : `/logo <ichika>`"
         )
         return
     pesan = await event.reply("**ᴄʀᴇᴀᴛɪɴɢ ʏᴏᴜʀ ʀᴇǫᴜᴇsᴛᴇᴅ ʟᴏɢᴏ ᴘʟᴇᴀsᴇ ᴡᴀɪᴛ ᴀ sᴇᴄ​...**")
@@ -279,7 +279,7 @@ async def lego(event):
         await telethn.send_file(
             event.chat_id,
             file=fname,
-            caption=f"ʟᴏɢᴏ ɢᴇɴᴇʀᴀᴛᴇᴅ ʙʏ [{BOT_NAME}](https://t.me/{BOT_USERNAME})",
+            caption=f"ʟᴏɢᴏ ɢᴇɴᴇʀᴀᴛᴇᴅ ʙʏ [{𝐈ᴄʜɪᴋᴀ 𝐍ᴀᴋᴀɴᴏ}](https://t.me/{ichikax_bot})",
         )
         await pesan.delete()
         if os.path.exists(fname):
@@ -312,14 +312,14 @@ async def lego(event):
         await telethn.send_file(
             event.chat_id,
             file=fname,
-            caption=f"ʟᴏɢᴏ ɢᴇɴᴇʀᴀᴛᴇᴅ ʙʏ [{BOT_NAME}](https://t.me/{BOT_USERNAME})",
+            caption=f"ʟᴏɢᴏ ɢᴇɴᴇʀᴀᴛᴇᴅ ʙʏ [{𝐈ᴄʜɪᴋᴀ 𝐍ᴀᴋᴀɴᴏ}](https://t.me/{ichikax_bot})",
         )
         await pesan.delete()
         if os.path.exists(fname):
             os.remove(fname)
 
 
-__mod_name__ = "𝐋ᴏɢᴏ​"
+__mod_name__ = "𝐋ᴏɢᴏ"
 
 __help__ = """
 I can create some beautiful and attractive logo for your profile pics.
