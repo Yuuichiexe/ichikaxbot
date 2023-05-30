@@ -48,7 +48,7 @@ from telethon import TelegramClient
 from Python_ARQ import ARQ
 from telethon.sessions import MemorySession
 
-from Shikimori.services.quoteapi import Quotly
+
 import spamwatch
 
 
@@ -337,4 +337,4 @@ tg.CommandHandler = CustomCommandHandler
 tg.MessageHandler = CustomMessageHandler
 
 
-quotly = Quotly()
+
