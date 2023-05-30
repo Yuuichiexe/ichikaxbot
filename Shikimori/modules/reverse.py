@@ -79,7 +79,7 @@ async def _reverse(_,msg):
       result = await Sauce(bot_token,file_id)
       if not result["output"]:
           return await text.edit("Couldn't find anything")
-      await text.edit(f'[{result["output"]}]({result["similar"]})\n\n⇢**Creator**:- @ichikax_nakano',reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Site",url=result["similar"])]]))
+      await text.edit(f'[{result["output"]}]({result["similar"]})\n\n⇢**Creator**:- @REXxxiiiii',reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Site",url=result["similar"])]]))
   else:
       text = await msg.reply("**⇢ wait a sec...**")
       file_id = await get_file_id_from_message(msg)
@@ -89,7 +89,7 @@ async def _reverse(_,msg):
       result = await Sauce(bot_token,file_id)
       if not result["output"]:
           return await text.edit("Couldn't find anything")
-      await text.edit(f'[{result["output"]}]({result["similar"]})\n\n⇢**Creator**:- @ichikax_nakano',reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Site",url=result["similar"])]]))
+      await text.edit(f'[{result["output"]}]({result["similar"]})\n\n⇢**Creator**:- @REXxxiiiii',reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Site",url=result["similar"])]]))
    
  
                       
