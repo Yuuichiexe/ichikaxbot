@@ -17,7 +17,7 @@ from Shikimori import OWNER_ID
 from Shikimori.events import register
 from Shikimori import telethn
 from PIL import Image, ImageDraw, ImageFont
-from Shikimori import SUPPORT_GROUP
+
 
 LOGO_LINKS            = ["https://telegra.ph/file/d1838efdafce9fe611d0c.jpg",
                          "https://telegra.ph/file/c1ff2d5ec5e1b5bd1b200.jpg",
