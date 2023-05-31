@@ -13,11 +13,11 @@ from io import BytesIO
 from requests import get
 from telethon.tl.types import InputMessagesFilterPhotos
 
-from Tianabot import OWNER_ID
-from Tianabot.events import register
-from Tianabot import telethn
+from Shikimori import OWNER_ID
+from Shikimori.events import register
+from Shikimori import telethn
 from PIL import Image, ImageDraw, ImageFont
-from Tianabot import SUPPORT_GROUP
+from Shikimori import SUPPORT_GROUP
 
 LOGO_LINKS            = ["https://telegra.ph/file/d1838efdafce9fe611d0c.jpg",
                          "https://telegra.ph/file/c1ff2d5ec5e1b5bd1b200.jpg",
