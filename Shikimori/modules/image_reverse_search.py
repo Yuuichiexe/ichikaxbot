@@ -2,7 +2,7 @@ import requests
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Update
 from telegram.ext import CallbackContext, CommandHandler
 
-from NekoRobot import TOKEN, NEKO_PTB
+from Shikimori import TOKEN, dispatcher
 
 url = "https://google-reverse-image-api.vercel.app/reverse"
 
@@ -43,4 +43,4 @@ def reverse(update: Update, context: CallbackContext):
 reverse_cmd = CommandHandler(
     ["grs", "reverse", "pp", "p", "P", "grab"], reverse, run_async=True
 )
-NEKO_PTB.add_handler(reverse_cmd)
+dispatcher.add_handler(reverse_cmd)
