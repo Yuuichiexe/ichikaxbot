@@ -55,9 +55,7 @@ buttons = [
             text=f"➕ Aᴅᴅ Mᴇ Tᴏ Yᴏᴜʀ Cʜᴀᴛ ➕", url=f"t.me/{BOT_USERNAME}?startgroup=true"),
     ],
     [
-        InlineKeyboardButton(text="⚙ Cᴏᴍᴍᴀɴᴅꜱ ", callback_data="help_back"),
-        InlineKeyboardButton(
-            text="Oᴡɴᴇʀ", url="https://t.me/Ichikax_nakano"),
+        InlineKeyboardButton(text="⚙ Cᴏᴍᴍᴀɴᴅꜱ ", url="/help@ichikax_bot"),
     ],
     [
         InlineKeyboardButton(text="Sᴜᴘᴘᴏʀᴛ", url=f"https://t.me/{SUPPORT_CHAT}"),
@@ -127,8 +125,8 @@ def start(update: Update, context: CallbackContext):
     else:
         start_buttons = [
                  [
-                    InlineKeyboardButton(text="🚨Support Grp", url=f"https://t.me/{SUPPORT_CHAT}"),
-                    InlineKeyboardButton(text="❗Updates", url=f"https://t.me/{UPDATE_CHANNEL}")
+                    InlineKeyboardButton(text="Sᴜᴘᴘᴏʀᴛ", url=f"https://t.me/{SUPPORT_CHAT}"),
+                    InlineKeyboardButton(text="Uᴘᴅᴀᴛᴇꜱ", url=f"https://t.me/{UPDATE_CHANNEL}")
                  ]
                 ]
         chat_id = update.effective_chat.id
