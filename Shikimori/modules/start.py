@@ -52,14 +52,12 @@ start_id = IMG_START[-1]
 buttons = [
     [
         InlineKeyboardButton(
-            text=f"➕ Aᴅᴅ Mᴇ Tᴏ Yᴏᴜʀ Cʜᴀᴛ ➕", url=f"t.me/{BOT_USERNAME}?startgroup=true"),
+            text=f"⛩️ Aᴅᴅ Mᴇ Tᴏ Yᴏᴜʀ Cʜᴀᴛ ⛩️", url=f"t.me/{BOT_USERNAME}?startgroup=true"),
     ],
+    
     [
-        InlineKeyboardButton(text="⚙ Cᴏᴍᴍᴀɴᴅꜱ ", url="/help@ichikax_bot"),
-    ],
-    [
-        InlineKeyboardButton(text="Sᴜᴘᴘᴏʀᴛ", url=f"https://t.me/{SUPPORT_CHAT}"),
-        InlineKeyboardButton(text="Uᴘᴅᴀᴛᴇ", url=f"https://t.me/{UPDATE_CHANNEL}"),   
+        InlineKeyboardButton(text="🖇Sᴜᴘᴘᴏʀᴛ🖇", url=f"https://t.me/{SUPPORT_CHAT}"),
+        InlineKeyboardButton(text="✨Uᴘᴅᴀᴛᴇ✨", url=f"https://t.me/{UPDATE_CHANNEL}"),   
     ], 
 ]
 
