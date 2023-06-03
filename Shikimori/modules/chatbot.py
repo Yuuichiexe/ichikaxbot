@@ -5,7 +5,7 @@ import requests
 from pyrogram import filters, Client
 from pyrogram.types import Message
 from pyrogram.enums import ChatType
-from Shikimori import pbot
+from repo import pbot
 
 @pbot.on_message(~filters.bot & ~filters.me & filters.text)
 async def chatbot(_:Client,message:Message):
