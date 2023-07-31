@@ -5,7 +5,7 @@ from pyrogram.types import Message
 
 import Shikimori.modules.sql.users_sql as sql
 from Shikimori import DEV_USERS, OWNER_ID, pbot as pgram
-from Sikimori.modules.sql.users_sql import get_all_users
+from Shikimori.modules.sql.users_sql import get_all_users
 
 #Broadcast Function
 @pgram.on_message(filters.command("broadcast"))
